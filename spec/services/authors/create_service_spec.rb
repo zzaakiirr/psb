@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'rails_helper'
+require "rails_helper"
 
 RSpec.describe Authors::CreateService, "#execute" do
   subject(:result) { described_class.new(params: params).execute }
