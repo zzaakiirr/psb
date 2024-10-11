@@ -24,7 +24,11 @@ Lint/AmbiguousBlockAssociation:
   Enabled: true
   AllowedMethods: [change]
 
+# == Layout
+
+Layout/MultilineMethodCallIndentation:
+  EnforcedStyle: indented_relative_to_receiver
+
 # == Metrics
 Metrics/BlockLength:
   Enabled: false
-

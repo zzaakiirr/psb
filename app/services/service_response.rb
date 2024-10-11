@@ -30,9 +30,7 @@ class ServiceResponse
     self.reason = reason
   end
 
-  def [](key)
-    to_h[key]
-  end
+  delegate :[], to: :to_h
 
   def to_h
     (payload || {}).merge(
