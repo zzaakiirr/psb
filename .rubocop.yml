@@ -2,9 +2,29 @@ require:
   - rubocop-rails
 
 AllCops:
+  NewCops: disable
   TargetRubyVersion: 3.2.2
   TargetRailsVersion: 7.1
+
+# == Style
+
+Style/Documentation:
+  Enabled: false
+
+Style/HashSyntax:
+  EnforcedShorthandSyntax: never
 
 Style/StringLiterals:
   Enabled: true
   EnforcedStyle: double_quotes
+
+# == Lint
+
+Lint/AmbiguousBlockAssociation:
+  Enabled: true
+  AllowedMethods: [change]
+
+# == Metrics
+Metrics/BlockLength:
+  Enabled: false
+
