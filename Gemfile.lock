@@ -110,6 +110,18 @@ GEM
     json (2.7.2)
     json-schema (5.0.1)
       addressable (~> 2.8)
+    kaminari (1.2.2)
+      activesupport (>= 4.1.0)
+      kaminari-actionview (= 1.2.2)
+      kaminari-activerecord (= 1.2.2)
+      kaminari-core (= 1.2.2)
+    kaminari-actionview (1.2.2)
+      actionview
+      kaminari-core (= 1.2.2)
+    kaminari-activerecord (1.2.2)
+      activerecord
+      kaminari-core (= 1.2.2)
+    kaminari-core (1.2.2)
     language_server-protocol (3.17.0.3)
     loofah (2.22.0)
       crass (~> 1.0.2)
@@ -289,6 +301,7 @@ DEPENDENCIES
   bootsnap
   debug
   factory_bot_rails
+  kaminari
   pg
   pry
   puma (>= 5.0)
