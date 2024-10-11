@@ -1,0 +1,427 @@
+---
+openapi: 3.0.1
+info:
+  title: API V1
+  version: v1
+paths:
+  "/authors":
+    post:
+      summary: Creates an author
+      tags:
+      - Authors
+      parameters: []
+      responses:
+        '201':
+          description: Author created
+          content:
+            application/json:
+              examples:
+                example:
+                  value:
+                    status: success
+                    message:
+                    payload:
+                      author:
+                        id: 1
+                        name: john
+                        surname: doe
+                        patronymic: patronymic
+                        created_at: '2024-10-11T00:00:00.000Z'
+                        updated_at: '2024-10-11T00:00:00.000Z'
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                  message:
+                    type: string
+                    nullable: true
+                  payload:
+                    type: object
+                    properties:
+                      author:
+                        type: object
+                        properties:
+                          id:
+                            type: integer
+                          name:
+                            type: string
+                          surname:
+                            type: string
+                            nullable: true
+                          patronymic:
+                            type: string
+                            nullable: true
+                          created_at:
+                            type: date_time
+                          updated_at:
+                            type: date_time
+                required:
+                - status
+                - message
+                - payload
+        '422':
+          description: Invalid request
+          content:
+            application/json:
+              examples:
+                example:
+                  value:
+                    status: error
+                    message: Name can't be blank
+                    payload: {}
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                  message:
+                    type: string
+                  payload:
+                    type: object
+                required:
+                - status
+                - message
+                - payload
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                surname:
+                  type: string
+                  nullable: true
+                patronymic:
+                  type: string
+                  nullable: true
+              required:
+              - name
+              - surname
+        required: true
+    get:
+      summary: Lists all authors
+      tags:
+      - Authors
+      parameters:
+      - name: page
+        in: query
+        required: false
+        schema:
+          type: integer
+      - name: per_page
+        in: query
+        required: false
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: Returns list of authors with pagination
+          content:
+            application/json:
+              examples:
+                example:
+                  value:
+                  - id: 1
+                    name: john
+                    surname: doe
+                    patronymic: patronymic
+                    created_at: '2024-10-11T00:00:00.000Z'
+                    updated_at: '2024-10-11T00:00:00.000Z'
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                    name:
+                      type: string
+                    surname:
+                      type: string
+                      nullable: true
+                    patronymic:
+                      type: string
+                      nullable: true
+                    created_at:
+                      type: date_time
+                    updated_at:
+                      type: date_time
+  "/authors/{id}":
+    get:
+      summary: Retrieves an author
+      tags:
+      - Authors
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: Author found
+          content:
+            application/json:
+              examples:
+                example:
+                  value:
+                    id: 1
+                    name: john
+                    surname: doe
+                    patronymic: patronymic
+                    created_at: '2024-10-11T00:00:00.000Z'
+                    updated_at: '2024-10-11T00:00:00.000Z'
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  name:
+                    type: string
+                  surname:
+                    type: string
+                    nullable: true
+                  patronymic:
+                    type: string
+                    nullable: true
+                  created_at:
+                    type: date_time
+                  updated_at:
+                    type: date_time
+                required:
+                - id
+                - name
+                - surname
+                - patronymic
+                - created_at
+                - updated_at
+        '404':
+          description: Author not found
+          content:
+            application/json:
+              examples:
+                example:
+                  value:
+                    status: error
+                    message: Record not found
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                  message:
+                    type: string
+                required:
+                - status
+                - message
+    put:
+      summary: Updates an author
+      tags:
+      - Authors
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: Author updated
+          content:
+            application/json:
+              examples:
+                example:
+                  value:
+                    status: success
+                    message:
+                    payload:
+                      author:
+                        id: 1
+                        name: john
+                        surname: doe
+                        patronymic: patronymic
+                        created_at: '2024-10-11T00:00:00.000Z'
+                        updated_at: '2024-10-11T00:00:00.000Z'
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                  message:
+                    type: string
+                    nullable: true
+                  payload:
+                    type: object
+                    properties:
+                      author:
+                        type: object
+                        properties:
+                          id:
+                            type: integer
+                          name:
+                            type: string
+                          surname:
+                            type: string
+                            nullable: true
+                          patronymic:
+                            type: string
+                            nullable: true
+                          created_at:
+                            type: date_time
+                          updated_at:
+                            type: date_time
+                required:
+                - status
+                - message
+                - payload
+        '422':
+          description: Invalid request
+          content:
+            application/json:
+              examples:
+                example:
+                  value:
+                    status: error
+                    message: Name can't be blank
+                    payload: {}
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                  message:
+                    type: string
+                  payload:
+                    type: object
+                required:
+                - status
+                - message
+                - payload
+        '404':
+          description: Author not found
+          content:
+            application/json:
+              examples:
+                example:
+                  value:
+                    status: error
+                    message: Record not found
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                  message:
+                    type: string
+                required:
+                - status
+                - message
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  nullable: true
+                surname:
+                  type: string
+                  nullable: true
+                patronymic:
+                  type: string
+                  nullable: true
+        required: true
+    delete:
+      summary: Deletes an author and reassigns his courses to other author
+      tags:
+      - Authors
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+      - name: new_courses_author_id
+        in: query
+        required: false
+        description: Id of the author to reassign current author's courses
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: Author deleted
+          content:
+            application/json:
+              examples:
+                example:
+                  value:
+                    status: success
+                    message:
+                    payload:
+                      author:
+                        id: 1
+                        name: john
+                        surname: doe
+                        patronymic: patronymic
+                        created_at: '2024-10-11T00:00:00.000Z'
+                        updated_at: '2024-10-11T00:00:00.000Z'
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                  message:
+                    type: string
+                    nullable: true
+                  payload:
+                    type: object
+                    properties:
+                      author:
+                        type: object
+                        properties:
+                          id:
+                            type: integer
+                          name:
+                            type: string
+                          surname:
+                            type: string
+                            nullable: true
+                          patronymic:
+                            type: string
+                            nullable: true
+                          created_at:
+                            type: date_time
+                          updated_at:
+                            type: date_time
+                required:
+                - status
+                - message
+                - payload
+        '404':
+          description: New courses author not found
+          content:
+            application/json:
+              examples:
+                example:
+                  value:
+                    status: error
+                    message: Record not found
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                  message:
+                    type: string
+                required:
+                - status
+                - message
+servers:
+- url: http://{defaultHost}
+  variables:
+    defaultHost:
+      default: 127.0.0.1:3000

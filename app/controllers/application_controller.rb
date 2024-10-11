@@ -5,12 +5,18 @@ class ApplicationController < ActionController::API
 
   private
 
-  def render_not_found
-    render_error("Record not found", status: :not_found)
+  def render_json(service_response, **kwargs)
+    json_data = {
+      status: service_response.status,
+      payload: service_response.payload,
+      message: service_response.message
+    }
+
+    render json: json_data, **kwargs
   end
 
-  def render_error(err_msg, status: :unprocessable_entity)
-    render json: { error: err_msg }, status: status
+  def render_not_found
+    render json: { status: :error, message: "Record not found" }, status: :not_found
   end
 
   def page

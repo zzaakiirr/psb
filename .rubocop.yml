@@ -24,6 +24,9 @@ Lint/AmbiguousBlockAssociation:
   Enabled: true
   AllowedMethods: [change]
 
+Lint/ConstantDefinitionInBlock:
+  Enabled: false
+
 # == Layout
 
 Layout/MultilineMethodCallIndentation:

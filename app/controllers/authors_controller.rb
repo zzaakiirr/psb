@@ -16,52 +16,36 @@ class AuthorsController < ApplicationController
   def create
     result = Authors::CreateService.new(author_params).execute
 
-    if result.success?
-      author = result.payload[:author]
-      render json: { author: author }, status: :created, location: author
-    else
-      render_error(result.message)
-    end
+    render_json(result, status: result.success? ? :created : :unprocessable_entity)
   end
 
   def update
     result = Authors::UpdateService.new(author: author, params: author_params).execute
 
-    if result.success?
-      render json: { author: result.payload[:author] }
-    else
-      render_error(result.message)
-    end
+    render_json(result, status: result.success? ? :ok : :unprocessable_entity)
   end
 
   def destroy
     result = Authors::DestroyService.new(author).execute(new_courses_author: new_courses_author)
 
-    if result.success?
-      render json: { author: result.payload[:author] }
-    else
-      render_error(result.message)
-    end
+    render_json(result, status: (:ok if result.success?))
   end
 
   private
 
   def new_courses_author
-    new_courses_author_id = destroy_author_params[:new_courses_author_id]
+    new_courses_author_id = author_destroy_params[:new_courses_author_id]
+    return if new_courses_author_id.nil?
 
-    if new_courses_author_id
-      Author.find(new_courses_author_id)
-    else
-      Author.random_author
-    end
+    Author.find(new_courses_author_id)
   end
 
   def author_params
     params.permit(:name, :surname, :patronymic)
   end
 
-  def destroy_author_params
-    params.permit(:id, :new_courses_author_id)
+  def author_destroy_params
+    params.permit(:new_courses_author_id)
   end
 
   def author
