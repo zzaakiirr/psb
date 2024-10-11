@@ -10,16 +10,26 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_10_11_103433) do
+ActiveRecord::Schema[7.1].define(version: 2024_10_11_123524) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "authors", force: :cascade do |t|
-    t.string "name"
-    t.string "surname"
-    t.string "patronymic"
+    t.text "name", null: false
+    t.text "surname"
+    t.text "patronymic"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
+  create_table "courses", force: :cascade do |t|
+    t.bigint "author_id", null: false
+    t.text "title", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["author_id"], name: "index_courses_on_author_id"
+    t.index ["title"], name: "index_courses_on_title", unique: true
+  end
+
+  add_foreign_key "courses", "authors"
 end

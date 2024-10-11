@@ -5,7 +5,7 @@ module Authors
     attr_reader :author
 
     def initialize(author:, params:)
-      super(params: params)
+      super(params)
 
       @author = author
     end

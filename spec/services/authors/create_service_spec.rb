@@ -3,7 +3,7 @@
 require "rails_helper"
 
 RSpec.describe Authors::CreateService, "#execute" do
-  subject(:result) { described_class.new(params: params).execute }
+  subject(:result) { described_class.new(params).execute }
 
   shared_examples "returns error" do |err_msg|
     it "does not create author" do
