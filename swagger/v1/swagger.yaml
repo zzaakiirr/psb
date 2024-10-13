@@ -102,7 +102,7 @@ paths:
               - surname
         required: true
     get:
-      summary: Lists all authors
+      summary: Lists authors
       tags:
       - Authors
       parameters:
@@ -511,7 +511,7 @@ paths:
               - course_id
         required: true
     get:
-      summary: Lists all competencies
+      summary: Lists competencies
       tags:
       - Competencies
       parameters:
@@ -890,7 +890,7 @@ paths:
               - author_id
         required: true
     get:
-      summary: Lists all courses
+      summary: Lists courses
       tags:
       - Courses
       parameters:

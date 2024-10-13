@@ -101,7 +101,7 @@ RSpec.describe "Competencies API", type: :request do
       end
     end
 
-    get "Lists all competencies" do
+    get "Lists competencies" do
       tags "Competencies"
 
       consumes "application/json"

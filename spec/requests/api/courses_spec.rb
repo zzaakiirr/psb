@@ -101,7 +101,7 @@ RSpec.describe "Courses API", type: :request do
       end
     end
 
-    get "Lists all courses" do
+    get "Lists courses" do
       tags "Courses"
 
       consumes "application/json"

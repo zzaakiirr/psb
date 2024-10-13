@@ -102,7 +102,7 @@ RSpec.describe "Authors API", type: :request do
       end
     end
 
-    get "Lists all authors" do
+    get "Lists authors" do
       tags "Authors"
 
       consumes "application/json"
