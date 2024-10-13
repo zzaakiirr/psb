@@ -28,7 +28,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_10_11_123524) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["author_id"], name: "index_courses_on_author_id"
-    t.index ["title"], name: "index_courses_on_title", unique: true
+    t.index ["title", "author_id"], name: "index_courses_on_title_and_author_id", unique: true
   end
 
   add_foreign_key "courses", "authors"
