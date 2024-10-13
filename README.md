@@ -1,24 +1,29 @@
-# README
+# PSB task
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+#### Requirements
 
-Things you may want to cover:
+[Task description](psb-task.pdf)
 
-* Ruby version
+#### Setup instructions
 
-* System dependencies
+1. Install dependencies
+```
+bundle install
+```
 
-* Configuration
+2. Prepare database
 
-* Database creation
+```
+bundle exec rails db:prepare
+```
 
-* Database initialization
+2. Run rails server
 
-* How to run the test suite
+```
+bundle exec rails server
+```
 
-* Services (job queues, cache servers, search engines, etc.)
+3. Review API endpoints via swagger
 
-* Deployment instructions
+Visit http://127.0.0.1:3000/api-docs/index.html
 
-* ...
