@@ -29,7 +29,7 @@ RSpec.describe Authors::CreateService, "#execute" do
   context "with non-permitted params" do
     let(:params) { { name: "name", non_permitted_param: "non-permitted" } }
 
-    it "creates user with permitted params and returns success" do
+    it "creates author with permitted params and returns success" do
       expect do
         expect(result).to be_success
       end.to change { Author.count }.by(1)
@@ -44,7 +44,7 @@ RSpec.describe Authors::CreateService, "#execute" do
   context "with all params" do
     let(:params) { { name: "john", surname: "doe", patronymic: "patronymic" } }
 
-    it "creates user and returns success" do
+    it "creates author and returns success" do
       expect do
         expect(result).to be_success
       end.to change { Author.count }.by(1)

@@ -10,7 +10,7 @@ RSpec.describe Authors::UpdateService, "#execute" do
   context "without any params" do
     let(:params) { {} }
 
-    it "does not update user and returns success" do
+    it "does not update author and returns success" do
       expect do
         expect(result).to be_success
       end.not_to change { author.reload }
@@ -31,7 +31,7 @@ RSpec.describe Authors::UpdateService, "#execute" do
   context "with non-permitted params" do
     let(:params) { { name: "new_name", non_permitted_param: "non-permitted" } }
 
-    it "updates user with permitted params and returns success" do
+    it "updates author with permitted params and returns success" do
       expect do
         expect(result).to be_success
       end.to change { author.reload.name }.from("old_name").to("new_name")
@@ -41,7 +41,7 @@ RSpec.describe Authors::UpdateService, "#execute" do
   context "with all params" do
     let(:params) { { name: "new_name", surname: "new_surname", patronymic: "new_patronymic" } }
 
-    it "updates user and returns success", :aggregate_failures do
+    it "updates author and returns success", :aggregate_failures do
       expect do
         expect(result).to be_success
         author.reload
