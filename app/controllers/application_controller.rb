@@ -19,11 +19,10 @@ class ApplicationController < ActionController::API
     render json: { status: :error, message: "Record not found" }, status: :not_found
   end
 
-  def page
-    params.fetch(:page, 1)
-  end
-
-  def per_page
-    params.fetch(:per_page, Kaminari.config.default_per_page)
+  def pagination_params
+    {
+      page: params.fetch(:page, 1),
+      per_page: params.fetch(:per_page, Kaminari.config.default_per_page)
+    }
   end
 end

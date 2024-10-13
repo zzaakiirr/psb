@@ -4,7 +4,7 @@ class CoursesController < ApplicationController
   before_action :course, only: %i[show update destroy]
 
   def index
-    courses = Course.page(page).per(per_page)
+    courses = CoursesFinder.new(finder_params).execute
 
     render json: courses
   end
@@ -39,5 +39,9 @@ class CoursesController < ApplicationController
 
   def course_params
     params.permit(:title, :author_id)
+  end
+
+  def finder_params
+    params.slice(:search, :author_id).merge(pagination_params)
   end
 end

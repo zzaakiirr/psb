@@ -108,24 +108,9 @@ RSpec.describe "Authors API", type: :request do
       consumes "application/json"
       produces "application/json"
 
+      parameter name: :search, in: :query, type: :string, required: false
       parameter name: :page, in: :query, type: :integer, required: false, default: 1
       parameter name: :per_page, in: :query, type: :integer, required: false, default: 25
-
-      response "200", "Returns list of authors" do
-        schema type: :array, items: AUTHOR_SCHEMA
-
-        example "application/json", :example, [AUTHOR_SCHEMA_EXAMPLE]
-
-        let!(:author) { create(:author) }
-
-        run_test! do |response|
-          data = json_data(response)
-          expect(data.count).to eq(1)
-
-          author_data = data.first
-          expect_correct_author_data(author_data, author)
-        end
-      end
 
       response "200", "Returns list of authors with pagination" do
         schema type: :array, items: AUTHOR_SCHEMA
@@ -143,6 +128,45 @@ RSpec.describe "Authors API", type: :request do
 
           author_data = data.first
           expect_correct_author_data(author_data, authors[1])
+        end
+      end
+
+      response "200", "Returns list of authors filtered by search query" do
+        schema type: :array, items: AUTHOR_SCHEMA
+
+        example "application/json", :example, [AUTHOR_SCHEMA_EXAMPLE]
+
+        let(:search) { "Jo" }
+
+        let!(:authors) do
+          [
+            create(:author, name: "John", surname: "Malkovich"),
+            create(:author, name: "Arthur", surname: "Conan")
+          ]
+        end
+
+        run_test! do |response|
+          data = json_data(response)
+          expect(data.count).to eq(1)
+
+          author_data = data.first
+          expect_correct_author_data(author_data, authors[0])
+        end
+      end
+
+      response "200", "Returns list of authors" do
+        schema type: :array, items: AUTHOR_SCHEMA
+
+        example "application/json", :example, [AUTHOR_SCHEMA_EXAMPLE]
+
+        let!(:author) { create(:author) }
+
+        run_test! do |response|
+          data = json_data(response)
+          expect(data.count).to eq(1)
+
+          author_data = data.first
+          expect_correct_author_data(author_data, author)
         end
       end
     end

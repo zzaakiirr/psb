@@ -107,24 +107,10 @@ RSpec.describe "Competencies API", type: :request do
       consumes "application/json"
       produces "application/json"
 
+      parameter name: :search, in: :query, type: :string, required: false
+      parameter name: :course_id, in: :query, type: :integer, required: false
       parameter name: :page, in: :query, type: :integer, required: false, default: 1
       parameter name: :per_page, in: :query, type: :integer, required: false, default: 25
-
-      response "200", "Returns list of competencies" do
-        schema type: :array, items: COMPETENCY_SCHEMA
-
-        example "application/json", :example, [COMPETENCY_SCHEMA_EXAMPLE]
-
-        let!(:competency) { create(:competency) }
-
-        run_test! do |response|
-          data = json_data(response)
-          expect(data.count).to eq(1)
-
-          competency_data = data.first
-          expect_correct_competency_data(competency_data, competency)
-        end
-      end
 
       response "200", "Returns list of competencies with pagination" do
         schema type: :array, items: COMPETENCY_SCHEMA
@@ -142,6 +128,63 @@ RSpec.describe "Competencies API", type: :request do
 
           competency_data = data.first
           expect_correct_competency_data(competency_data, competencies[1])
+        end
+      end
+
+      response "200", "Returns list of course's competencies" do
+        schema type: :array, items: COMPETENCY_SCHEMA
+
+        example "application/json", :example, [COMPETENCY_SCHEMA_EXAMPLE]
+
+        let(:course_id) { competencies[0].course_id }
+
+        let!(:competencies) { create_list(:competency, 3) }
+
+        run_test! do |response|
+          data = json_data(response)
+          expect(data.count).to eq(1)
+
+          competency_data = data.first
+          expect_correct_competency_data(competency_data, competencies[0])
+        end
+      end
+
+      response "200", "Returns list of competencies filtered by search query" do
+        schema type: :array, items: COMPETENCY_SCHEMA
+
+        example "application/json", :example, [COMPETENCY_SCHEMA_EXAMPLE]
+
+        let(:search) { "Ma" }
+
+        let!(:competencies) do
+          [
+            create(:competency, title: "Math"),
+            create(:competency, title: "Criminal Psychology")
+          ]
+        end
+
+        run_test! do |response|
+          data = json_data(response)
+          expect(data.count).to eq(1)
+
+          competency_data = data.first
+          expect_correct_competency_data(competency_data, competencies[0])
+        end
+      end
+
+      response "200", "Returns list of competencies" do
+        schema type: :array, items: COMPETENCY_SCHEMA
+
+        example "application/json", :example, [COMPETENCY_SCHEMA_EXAMPLE]
+
+        let!(:competency) { create(:competency) }
+
+        run_test! do |response|
+          data = json_data(response)
+          expect(data.count).to eq(1)
+
+          competency_data = data.first
+          expect_correct_competency_data(competency_data, competency)
         end
       end
     end

@@ -4,7 +4,7 @@ class AuthorsController < ApplicationController
   before_action :author, only: %i[show update destroy]
 
   def index
-    authors = Author.page(page).per(per_page)
+    authors = AuthorsFinder.new(finder_params).execute
 
     render json: authors
   end
@@ -46,6 +46,10 @@ class AuthorsController < ApplicationController
 
   def author_destroy_params
     params.permit(:new_courses_author_id)
+  end
+
+  def finder_params
+    params.slice(:search).merge(pagination_params)
   end
 
   def author

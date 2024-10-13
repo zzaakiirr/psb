@@ -4,7 +4,7 @@ class CompetenciesController < ApplicationController
   before_action :competency, only: %i[show update destroy]
 
   def index
-    competencies = Competency.page(page).per(per_page)
+    competencies = CompetenciesFinder.new(finder_params).execute
 
     render json: competencies
   end
@@ -39,5 +39,9 @@ class CompetenciesController < ApplicationController
 
   def competency_params
     params.permit(:title, :course_id)
+  end
+
+  def finder_params
+    params.slice(:search, :course_id).merge(pagination_params)
   end
 end

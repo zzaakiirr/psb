@@ -107,24 +107,10 @@ RSpec.describe "Courses API", type: :request do
       consumes "application/json"
       produces "application/json"
 
+      parameter name: :search, in: :query, type: :string, required: false
+      parameter name: :author_id, in: :query, type: :integer, required: false
       parameter name: :page, in: :query, type: :integer, required: false, default: 1
       parameter name: :per_page, in: :query, type: :integer, required: false, default: 25
-
-      response "200", "Returns list of courses" do
-        schema type: :array, items: COURSE_SCHEMA
-
-        example "application/json", :example, [COURSE_SCHEMA_EXAMPLE]
-
-        let!(:course) { create(:course) }
-
-        run_test! do |response|
-          data = json_data(response)
-          expect(data.count).to eq(1)
-
-          course_data = data.first
-          expect_correct_course_data(course_data, course)
-        end
-      end
 
       response "200", "Returns list of courses with pagination" do
         schema type: :array, items: COURSE_SCHEMA
@@ -142,6 +128,63 @@ RSpec.describe "Courses API", type: :request do
 
           course_data = data.first
           expect_correct_course_data(course_data, courses[1])
+        end
+      end
+
+      response "200", "Returns list of author's courses" do
+        schema type: :array, items: COURSE_SCHEMA
+
+        example "application/json", :example, [COURSE_SCHEMA_EXAMPLE]
+
+        let(:author_id) { courses[0].author_id }
+
+        let!(:courses) { create_list(:course, 3) }
+
+        run_test! do |response|
+          data = json_data(response)
+          expect(data.count).to eq(1)
+
+          course_data = data.first
+          expect_correct_course_data(course_data, courses[0])
+        end
+      end
+
+      response "200", "Returns list of courses filtered by search query" do
+        schema type: :array, items: COURSE_SCHEMA
+
+        example "application/json", :example, [COURSE_SCHEMA_EXAMPLE]
+
+        let(:search) { "Ma" }
+
+        let!(:courses) do
+          [
+            create(:course, title: "Math"),
+            create(:course, title: "Criminal Psychology")
+          ]
+        end
+
+        run_test! do |response|
+          data = json_data(response)
+          expect(data.count).to eq(1)
+
+          course_data = data.first
+          expect_correct_course_data(course_data, courses[0])
+        end
+      end
+
+      response "200", "Returns list of courses" do
+        schema type: :array, items: COURSE_SCHEMA
+
+        example "application/json", :example, [COURSE_SCHEMA_EXAMPLE]
+
+        let!(:course) { create(:course) }
+
+        run_test! do |response|
+          data = json_data(response)
+          expect(data.count).to eq(1)
+
+          course_data = data.first
+          expect_correct_course_data(course_data, course)
         end
       end
     end
