@@ -10,4 +10,8 @@ RSpec.describe Author do
     it { is_expected.to validate_length_of(:surname).is_at_most(255) }
     it { is_expected.to validate_length_of(:patronymic).is_at_most(255) }
   end
+
+  describe "associations" do
+    it { is_expected.to have_many(:courses) }
+  end
 end

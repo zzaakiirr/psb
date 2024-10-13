@@ -10,4 +10,8 @@ RSpec.describe Competency do
     it { is_expected.to validate_length_of(:title).is_at_most(255) }
     it { is_expected.to validate_uniqueness_of(:title) }
   end
+
+  describe "associations" do
+    it { is_expected.to belong_to(:course).optional }
+  end
 end
