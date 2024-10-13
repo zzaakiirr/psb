@@ -2,13 +2,13 @@
 
 require "swagger_helper"
 
-RSpec.describe "Courses API", type: :request do
-  COURSE_SCHEMA = {
+RSpec.describe "Competencies API", type: :request do
+  COMPETENCY_SCHEMA = {
     type: :object,
     properties: {
       id: { type: :integer },
       title: { type: :string },
-      author_id: { type: :integer },
+      course_id: { type: :integer },
       created_at: { type: :date_time },
       updated_at: { type: :date_time }
     }
@@ -22,26 +22,26 @@ RSpec.describe "Courses API", type: :request do
       payload: {
         type: :object,
         properties: {
-          course: COURSE_SCHEMA
+          competency: COMPETENCY_SCHEMA
         }
       }
     },
     required: %w[status message payload]
   }.freeze
 
-  COURSE_SCHEMA_EXAMPLE = {
+  COMPETENCY_SCHEMA_EXAMPLE = {
     id: 1,
-    title: "Test course",
-    author_id: 1,
+    title: "Test competency",
+    course_id: 1,
     created_at: "2024-10-11T00:00:00.000Z",
     updated_at: "2024-10-11T00:00:00.000Z"
   }.freeze
 
-  path "/courses" do
-    let(:author) { create(:author) }
+  path "/competencies" do
+    let(:course) { create(:course) }
 
-    post "Creates a course" do
-      tags "Courses"
+    post "Creates a competency" do
+      tags "Competencies"
 
       consumes "application/json"
       produces "application/json"
@@ -50,21 +50,21 @@ RSpec.describe "Courses API", type: :request do
         type: :object,
         properties: {
           title: { type: :string },
-          author_id: { type: :integer }
+          course_id: { type: :integer }
         },
-        required: %w[title author_id]
+        required: %w[title course_id]
       }
 
-      response "201", "Course created" do
+      response "201", "Competency created" do
         schema(**POST_RESPONSE_SCHEMA)
 
         example "application/json", :example, {
           status: "success",
           message: nil,
-          payload: { course: COURSE_SCHEMA_EXAMPLE }
+          payload: { competency: COMPETENCY_SCHEMA_EXAMPLE }
         }
 
-        let(:attrs) { { title: "Test course", author_id: author.id } }
+        let(:attrs) { { title: "Test competency", course_id: course.id } }
 
         run_test! do |response|
           data = json_data(response)
@@ -72,9 +72,9 @@ RSpec.describe "Courses API", type: :request do
           expect(data.fetch("status")).to eq("success")
           expect(data.fetch("message")).to be_nil
 
-          course_data = data.fetch("payload").fetch("course")
-          expect(course_data.fetch("title")).to eq attrs.fetch(:title)
-          expect(course_data.fetch("author_id")).to eq attrs.fetch(:author_id)
+          competency_data = data.fetch("payload").fetch("competency")
+          expect(competency_data.fetch("title")).to eq attrs.fetch(:title)
+          expect(competency_data.fetch("course_id")).to eq attrs.fetch(:course_id)
         end
       end
 
@@ -93,7 +93,7 @@ RSpec.describe "Courses API", type: :request do
           payload: {}
         }
 
-        let(:attrs) { { author_id: author.id } }
+        let(:attrs) { { course_id: course.id } }
 
         run_test! do |response|
           expect_error_response(response, msg: "Title can't be blank")
@@ -101,8 +101,8 @@ RSpec.describe "Courses API", type: :request do
       end
     end
 
-    get "Lists all courses" do
-      tags "Courses"
+    get "Lists all competencies" do
+      tags "Competencies"
 
       consumes "application/json"
       produces "application/json"
@@ -110,65 +110,65 @@ RSpec.describe "Courses API", type: :request do
       parameter name: :page, in: :query, type: :integer, required: false, default: 1
       parameter name: :per_page, in: :query, type: :integer, required: false, default: 25
 
-      response "200", "Returns list of courses" do
-        schema type: :array, items: COURSE_SCHEMA
+      response "200", "Returns list of competencies" do
+        schema type: :array, items: COMPETENCY_SCHEMA
 
-        example "application/json", :example, [COURSE_SCHEMA_EXAMPLE]
+        example "application/json", :example, [COMPETENCY_SCHEMA_EXAMPLE]
 
-        let!(:course) { create(:course) }
+        let!(:competency) { create(:competency) }
 
         run_test! do |response|
           data = json_data(response)
           expect(data.count).to eq(1)
 
-          course_data = data.first
-          expect_correct_course_data(course_data, course)
+          competency_data = data.first
+          expect_correct_competency_data(competency_data, competency)
         end
       end
 
-      response "200", "Returns list of courses with pagination" do
-        schema type: :array, items: COURSE_SCHEMA
+      response "200", "Returns list of competencies with pagination" do
+        schema type: :array, items: COMPETENCY_SCHEMA
 
-        example "application/json", :example, [COURSE_SCHEMA_EXAMPLE]
+        example "application/json", :example, [COMPETENCY_SCHEMA_EXAMPLE]
 
         let(:page) { 2 }
         let(:per_page) { 1 }
 
-        let!(:courses) { create_list(:course, 3) }
+        let!(:competencies) { create_list(:competency, 3) }
 
         run_test! do |response|
           data = json_data(response)
           expect(data.count).to eq(1)
 
-          course_data = data.first
-          expect_correct_course_data(course_data, courses[1])
+          competency_data = data.first
+          expect_correct_competency_data(competency_data, competencies[1])
         end
       end
     end
   end
 
-  path "/courses/{id}" do
-    let(:course) { create(:course) }
+  path "/competencies/{id}" do
+    let(:competency) { create(:competency) }
 
-    get "Retrieves a course" do
-      tags "Courses"
+    get "Retrieves a competency" do
+      tags "Competencies"
       produces "application/json"
       parameter name: :id, in: :path, type: :integer, required: true
 
-      response "200", "Course found" do
-        schema(**COURSE_SCHEMA, required: %w[id title author_id created_at updated_at])
+      response "200", "Competency found" do
+        schema(**COMPETENCY_SCHEMA, required: %w[id title course_id created_at updated_at])
 
-        example "application/json", :example, COURSE_SCHEMA_EXAMPLE
+        example "application/json", :example, COMPETENCY_SCHEMA_EXAMPLE
 
-        let(:id) { course.id }
+        let(:id) { competency.id }
 
         run_test! do |response|
           data = json_data(response)
-          expect_correct_course_data(data, course)
+          expect_correct_competency_data(data, competency)
         end
       end
 
-      response "404", "Course not found" do
+      response "404", "Competency not found" do
         schema type: :object,
                properties: {
                  status: { type: :string },
@@ -189,8 +189,8 @@ RSpec.describe "Courses API", type: :request do
       end
     end
 
-    put "Updates a course" do
-      tags "Courses"
+    put "Updates a competency" do
+      tags "Competencies"
 
       consumes "application/json"
       produces "application/json"
@@ -200,20 +200,20 @@ RSpec.describe "Courses API", type: :request do
         type: :object,
         properties: {
           title: { type: :string, nullable: true },
-          author_id: { type: :integer, nullable: true },
+          course_id: { type: :integer, nullable: true },
         }
       }
 
-      response "200", "Course updated" do
+      response "200", "Competency updated" do
         schema(**POST_RESPONSE_SCHEMA)
 
         example "application/json", :example, {
           status: "success",
           message: nil,
-          payload: { course: COURSE_SCHEMA_EXAMPLE }
+          payload: { competency: COMPETENCY_SCHEMA_EXAMPLE }
         }
 
-        let(:id) { course.id }
+        let(:id) { competency.id }
         let(:attrs) { { title: "updated_title" } }
 
         run_test! do |response|
@@ -222,8 +222,8 @@ RSpec.describe "Courses API", type: :request do
           expect(data.fetch("status")).to eq("success")
           expect(data.fetch("message")).to be_nil
 
-          course_data = data.fetch("payload").fetch("course")
-          expect(course_data.fetch("title")).to eq attrs.fetch(:title)
+          competency_data = data.fetch("payload").fetch("competency")
+          expect(competency_data.fetch("title")).to eq attrs.fetch(:title)
         end
       end
 
@@ -242,7 +242,7 @@ RSpec.describe "Courses API", type: :request do
           payload: {}
         }
 
-        let(:id) { course.id }
+        let(:id) { competency.id }
         let(:attrs) { { title: nil } }
 
         run_test! do |response|
@@ -250,7 +250,7 @@ RSpec.describe "Courses API", type: :request do
         end
       end
 
-      response "404", "Course not found" do
+      response "404", "Competency not found" do
         schema type: :object,
                properties: {
                  status: { type: :string },
@@ -272,24 +272,26 @@ RSpec.describe "Courses API", type: :request do
       end
     end
 
-    delete "Deletes a course" do
-      tags "Courses"
+    delete "Deletes a competency" do
+      tags "Competencies"
 
       consumes "application/json"
       produces "application/json"
 
       parameter name: :id, in: :path, type: :integer, required: true
 
-      response "200", "Course deleted" do
+      let(:other_competency) { create(:competency) }
+
+      response "200", "Competency deleted" do
         schema(**POST_RESPONSE_SCHEMA)
 
         example "application/json", :example, {
           status: "success",
           message: nil,
-          payload: { course: COURSE_SCHEMA_EXAMPLE }
+          payload: { competency: COMPETENCY_SCHEMA_EXAMPLE }
         }
 
-        let(:id) { course.id }
+        let(:id) { competency.id }
 
         run_test! do |response|
           data = json_data(response)
@@ -297,12 +299,12 @@ RSpec.describe "Courses API", type: :request do
           expect(data.fetch("status")).to eq("success")
           expect(data.fetch("message")).to be_nil
 
-          course_data = data.fetch("payload").fetch("course")
-          expect(course_data.fetch("id")).to eq(id)
+          competency_data = data.fetch("payload").fetch("competency")
+          expect(competency_data.fetch("id")).to eq(id)
         end
       end
 
-      response "404", "Course not found" do
+      response "404", "Competency not found" do
         schema type: :object,
                properties: {
                  status: { type: :string },
@@ -325,12 +327,12 @@ RSpec.describe "Courses API", type: :request do
   end
 
   # rubocop:disable Metrics/AbcSize
-  def expect_correct_course_data(data, course)
-    expect(data.fetch("id")).to eq(course.id)
-    expect(data.fetch("title")).to eq(course.title)
-    expect(data.fetch("author_id")).to eq(course.author_id)
-    expect(data.fetch("created_at")).to eq(course.created_at.as_json)
-    expect(data.fetch("updated_at")).to eq(course.updated_at.as_json)
+  def expect_correct_competency_data(data, competency)
+    expect(data.fetch("id")).to eq(competency.id)
+    expect(data.fetch("title")).to eq(competency.title)
+    expect(data.fetch("course_id")).to eq(competency.course_id)
+    expect(data.fetch("created_at")).to eq(competency.created_at.as_json)
+    expect(data.fetch("updated_at")).to eq(competency.updated_at.as_json)
   end
   # rubocop:enable Metrics/AbcSize
 end

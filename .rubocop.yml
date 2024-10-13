@@ -8,15 +8,30 @@ AllCops:
 
 # == Style
 
+Style/FrozenStringLiteralComment:
+  Enabled: true
+  Exclude:
+    - db/schema.rb
+
 Style/Documentation:
   Enabled: false
 
 Style/HashSyntax:
   EnforcedShorthandSyntax: never
 
+Style/NumericLiterals:
+  Enabled: true
+  Exclude:
+    - db/schema.rb
+
 Style/StringLiterals:
   Enabled: true
   EnforcedStyle: double_quotes
+
+Style/WordArray:
+  Enabled: true
+  Exclude:
+    - db/schema.rb
 
 # == Lint
 

@@ -422,6 +422,385 @@ paths:
                 required:
                 - status
                 - message
+  "/competencies":
+    post:
+      summary: Creates a competency
+      tags:
+      - Competencies
+      parameters: []
+      responses:
+        '201':
+          description: Competency created
+          content:
+            application/json:
+              examples:
+                example:
+                  value:
+                    status: success
+                    message:
+                    payload:
+                      competency:
+                        id: 1
+                        title: Test competency
+                        course_id: 1
+                        created_at: '2024-10-11T00:00:00.000Z'
+                        updated_at: '2024-10-11T00:00:00.000Z'
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                  message:
+                    type: string
+                    nullable: true
+                  payload:
+                    type: object
+                    properties:
+                      competency:
+                        type: object
+                        properties:
+                          id:
+                            type: integer
+                          title:
+                            type: string
+                          course_id:
+                            type: integer
+                          created_at:
+                            type: date_time
+                          updated_at:
+                            type: date_time
+                required:
+                - status
+                - message
+                - payload
+        '422':
+          description: Invalid request
+          content:
+            application/json:
+              examples:
+                example:
+                  value:
+                    status: error
+                    message: Title can't be blank
+                    payload: {}
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                  message:
+                    type: string
+                  payload:
+                    type: object
+                required:
+                - status
+                - message
+                - payload
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                course_id:
+                  type: integer
+              required:
+              - title
+              - course_id
+        required: true
+    get:
+      summary: Lists all competencies
+      tags:
+      - Competencies
+      parameters:
+      - name: page
+        in: query
+        required: false
+        default: 1
+        schema:
+          type: integer
+      - name: per_page
+        in: query
+        required: false
+        default: 25
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: Returns list of competencies with pagination
+          content:
+            application/json:
+              examples:
+                example:
+                  value:
+                  - id: 1
+                    title: Test competency
+                    course_id: 1
+                    created_at: '2024-10-11T00:00:00.000Z'
+                    updated_at: '2024-10-11T00:00:00.000Z'
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                    title:
+                      type: string
+                    course_id:
+                      type: integer
+                    created_at:
+                      type: date_time
+                    updated_at:
+                      type: date_time
+  "/competencies/{id}":
+    get:
+      summary: Retrieves a competency
+      tags:
+      - Competencies
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: Competency found
+          content:
+            application/json:
+              examples:
+                example:
+                  value:
+                    id: 1
+                    title: Test competency
+                    course_id: 1
+                    created_at: '2024-10-11T00:00:00.000Z'
+                    updated_at: '2024-10-11T00:00:00.000Z'
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  title:
+                    type: string
+                  course_id:
+                    type: integer
+                  created_at:
+                    type: date_time
+                  updated_at:
+                    type: date_time
+                required:
+                - id
+                - title
+                - course_id
+                - created_at
+                - updated_at
+        '404':
+          description: Competency not found
+          content:
+            application/json:
+              examples:
+                example:
+                  value:
+                    status: error
+                    message: Record not found
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                  message:
+                    type: string
+                required:
+                - status
+                - message
+    put:
+      summary: Updates a competency
+      tags:
+      - Competencies
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: Competency updated
+          content:
+            application/json:
+              examples:
+                example:
+                  value:
+                    status: success
+                    message:
+                    payload:
+                      competency:
+                        id: 1
+                        title: Test competency
+                        course_id: 1
+                        created_at: '2024-10-11T00:00:00.000Z'
+                        updated_at: '2024-10-11T00:00:00.000Z'
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                  message:
+                    type: string
+                    nullable: true
+                  payload:
+                    type: object
+                    properties:
+                      competency:
+                        type: object
+                        properties:
+                          id:
+                            type: integer
+                          title:
+                            type: string
+                          course_id:
+                            type: integer
+                          created_at:
+                            type: date_time
+                          updated_at:
+                            type: date_time
+                required:
+                - status
+                - message
+                - payload
+        '422':
+          description: Invalid request
+          content:
+            application/json:
+              examples:
+                example:
+                  value:
+                    status: error
+                    message: Title can't be blank
+                    payload: {}
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                  message:
+                    type: string
+                  payload:
+                    type: object
+                required:
+                - status
+                - message
+                - payload
+        '404':
+          description: Competency not found
+          content:
+            application/json:
+              examples:
+                example:
+                  value:
+                    status: error
+                    message: Record not found
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                  message:
+                    type: string
+                required:
+                - status
+                - message
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                  nullable: true
+                course_id:
+                  type: integer
+                  nullable: true
+        required: true
+    delete:
+      summary: Deletes a competency
+      tags:
+      - Competencies
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: Competency deleted
+          content:
+            application/json:
+              examples:
+                example:
+                  value:
+                    status: success
+                    message:
+                    payload:
+                      competency:
+                        id: 1
+                        title: Test competency
+                        course_id: 1
+                        created_at: '2024-10-11T00:00:00.000Z'
+                        updated_at: '2024-10-11T00:00:00.000Z'
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                  message:
+                    type: string
+                    nullable: true
+                  payload:
+                    type: object
+                    properties:
+                      competency:
+                        type: object
+                        properties:
+                          id:
+                            type: integer
+                          title:
+                            type: string
+                          course_id:
+                            type: integer
+                          created_at:
+                            type: date_time
+                          updated_at:
+                            type: date_time
+                required:
+                - status
+                - message
+                - payload
+        '404':
+          description: Competency not found
+          content:
+            application/json:
+              examples:
+                example:
+                  value:
+                    status: error
+                    message: Record not found
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                  message:
+                    type: string
+                required:
+                - status
+                - message
   "/courses":
     post:
       summary: Creates a course
@@ -728,7 +1107,7 @@ paths:
                   nullable: true
         required: true
     delete:
-      summary: Deletes a course and reassigns his courses to other course
+      summary: Deletes a course
       tags:
       - Courses
       parameters:
