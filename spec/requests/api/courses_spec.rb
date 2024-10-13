@@ -200,7 +200,7 @@ RSpec.describe "Courses API", type: :request do
         type: :object,
         properties: {
           title: { type: :string, nullable: true },
-          author_id: { type: :integer, nullable: true },
+          author_id: { type: :integer, nullable: true }
         }
       }
 

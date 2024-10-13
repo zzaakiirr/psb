@@ -12,7 +12,7 @@ RSpec.describe Authors::DestroyService, "#execute" do
       expect do
         expect(result).to be_error
         expect(result.message).to eq err_msg
-      end.to not_change { Author.count }
+      end.to(not_change { Author.count })
 
       expect(Authors::ReassignCoursesService).to have_received(:new).with(
         old_author: author,

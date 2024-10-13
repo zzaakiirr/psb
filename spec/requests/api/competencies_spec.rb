@@ -200,7 +200,7 @@ RSpec.describe "Competencies API", type: :request do
         type: :object,
         properties: {
           title: { type: :string, nullable: true },
-          course_id: { type: :integer, nullable: true },
+          course_id: { type: :integer, nullable: true }
         }
       }
 
