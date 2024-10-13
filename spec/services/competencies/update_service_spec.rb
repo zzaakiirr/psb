@@ -11,7 +11,7 @@ RSpec.describe Competencies::UpdateService, "#execute" do
   context "without any params" do
     let(:params) { {} }
 
-    it "does not update user and returns success" do
+    it "does not update competency and returns success" do
       expect do
         expect(result).to be_success
       end.not_to change { competency.reload }
@@ -32,7 +32,7 @@ RSpec.describe Competencies::UpdateService, "#execute" do
   context "with non-permitted params" do
     let(:params) { { title: "new_title", non_permitted_param: "non-permitted" } }
 
-    it "updates user with permitted params and returns success" do
+    it "updates competency with permitted params and returns success" do
       expect do
         expect(result).to be_success
       end.to change { competency.reload.title }.from("old_title").to("new_title")
@@ -43,7 +43,7 @@ RSpec.describe Competencies::UpdateService, "#execute" do
     let(:params) { { title: "new_title", course_id: new_course.id } }
     let(:new_course) { create(:course) }
 
-    it "updates user and returns success", :aggregate_failures do
+    it "updates competency and returns success", :aggregate_failures do
       expect do
         expect(result).to be_success
         competency.reload

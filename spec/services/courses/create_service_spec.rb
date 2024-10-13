@@ -45,7 +45,7 @@ RSpec.describe Courses::CreateService, "#execute" do
   context "with all params" do
     let(:params) { { title: "Test course", author_id: author.id } }
 
-    it "creates user and returns success" do
+    it "creates course and returns success" do
       expect do
         expect(result).to be_success
       end.to change { Course.count }.by(1)

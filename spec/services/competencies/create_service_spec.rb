@@ -45,7 +45,7 @@ RSpec.describe Competencies::CreateService, "#execute" do
   context "with all params" do
     let(:params) { { title: "Test competency", course_id: course.id } }
 
-    it "creates user and returns success" do
+    it "creates competency and returns success" do
       expect do
         expect(result).to be_success
       end.to change { Competency.count }.by(1)

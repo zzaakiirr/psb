@@ -11,7 +11,7 @@ RSpec.describe Courses::UpdateService, "#execute" do
   context "without any params" do
     let(:params) { {} }
 
-    it "does not update user and returns success" do
+    it "does not update course and returns success" do
       expect do
         expect(result).to be_success
       end.not_to change { course.reload }
@@ -32,7 +32,7 @@ RSpec.describe Courses::UpdateService, "#execute" do
   context "with non-permitted params" do
     let(:params) { { title: "new_title", non_permitted_param: "non-permitted" } }
 
-    it "updates user with permitted params and returns success" do
+    it "updates course with permitted params and returns success" do
       expect do
         expect(result).to be_success
       end.to change { course.reload.title }.from("old_title").to("new_title")
@@ -43,7 +43,7 @@ RSpec.describe Courses::UpdateService, "#execute" do
     let(:params) { { title: "new_title", author_id: new_author.id } }
     let(:new_author) { create(:author) }
 
-    it "updates user and returns success", :aggregate_failures do
+    it "updates course and returns success", :aggregate_failures do
       expect do
         expect(result).to be_success
         course.reload
